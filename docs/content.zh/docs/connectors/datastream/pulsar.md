@@ -61,7 +61,7 @@ PulsarSource<String> pulsarSource = PulsarSource.builder()
     .setSubscriptionType(SubscriptionType.Exclusive)
     .build();
 
-env.fromSource(source, WatermarkStrategy.noWatermarks(), "Pulsar Source");
+env.fromSource(pulsarSource, WatermarkStrategy.noWatermarks(), "Pulsar Source");
 ```
 
 如果使用构造类构造 Pulsar 数据源，一定要提供下面几个属性：
