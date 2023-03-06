@@ -19,6 +19,7 @@
 package org.apache.flink.table.data;
 
 import org.apache.flink.annotation.PublicEvolving;
+import org.apache.flink.table.data.utils.GenericRowDataConverter;
 import org.apache.flink.table.types.logical.RowType;
 import org.apache.flink.table.types.logical.StructuredType;
 import org.apache.flink.types.RowKind;
@@ -272,5 +273,20 @@ public final class GenericRowData implements RowData {
         }
 
         return row;
+    }
+
+    /**
+     * Convert {@link GenericRowData} to the given clazz object
+     *
+     * <p> Note: The field of the given clazz object needs to correspond to the GenericRowData field
+     *
+     **/
+    public static <T> T convertRowToPojo(GenericRowData rowData, Class<T> clazz) {
+        try {
+            return GenericRowDataConverter.convertToObject(rowData, clazz);
+        } catch (Exception e) {
+            String message = String.format("转换 %s 出现问题。", clazz.getName());
+            throw new RuntimeException(message, e);
+        }
     }
 }
